@@ -7,9 +7,9 @@ import { INITIAL_FILTERS, UserFilters } from "./filter";
 import { UsersSearchButton } from "./UsersSearchButton";
 import { UsersFilterChips } from "./UsersFilterChips";
 import { INITIAL_SORT, UsersSort } from "./sort";
-import { UsersSortControl } from "./UserSortControl";
 import { useSortedUsers } from "./useSortUsers";
 import { UsersSortButton } from "./UsersSortButton";
+import { UsersQuickFilter } from "./QuickFilter";
 
 export const UserPage = () => {
   const [users, setUsers] = useState<User[] | undefined>(undefined);
@@ -74,6 +74,7 @@ export const UserPage = () => {
           onChange={onSortChange}
           hasActiveSort={hasActiveSorts}
         />
+        <UsersQuickFilter value={filters} onChange={onFilterChange} />
         <UsersFilterChips value={filters} onChange={onFilterChange} />
         <UsersList users={sortedUsers} />
       </Box>
