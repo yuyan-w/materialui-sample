@@ -29,5 +29,5 @@ function sortUsers(list: User[], s: UsersSort): User[] {
     .map((x) => x.item);
 }
 
-const useSortedUsers = (users: User[], s: UsersSort) =>
+export const useSortedUsers = (users: User[], s: UsersSort) =>
   useMemo(() => sortUsers(users, s), [users, s]);

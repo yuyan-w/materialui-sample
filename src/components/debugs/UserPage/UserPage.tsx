@@ -6,14 +6,14 @@ import { Box, Typography } from "@mui/material";
 import { INITIAL_FILTERS, UserFilters } from "./filter";
 import { UsersSearchButton } from "./UsersSearchButton";
 import { UsersFilterChips } from "./UsersFilterChips";
-import { UsersSort } from "./sort";
+import { INITIAL_SORT, UsersSort } from "./sort";
+import { UsersSortControl } from "./UserSortControl";
+import { useSortedUsers } from "./useSortUsers";
+import { UsersSortButton } from "./UsersSortButton";
 
 export const UserPage = () => {
   const [users, setUsers] = useState<User[] | undefined>(undefined);
-  const [sort, setSort] = useState<UsersSort>({
-    key: "name",
-    direction: "asc",
-  });
+  const [sort, setSort] = useState<UsersSort>(INITIAL_SORT);
 
   useEffect(() => {
     const fetch = async () => {
@@ -31,6 +31,7 @@ export const UserPage = () => {
   );
 
   const filteredUsers = useFilteredUsers(users, filters);
+  const sortedUsers = useSortedUsers(filteredUsers, sort);
 
   const onFilterChange = (next: UserFilters) => {
     setFilters(next);
@@ -43,6 +44,13 @@ export const UserPage = () => {
   const hasActiveFilters = (() => {
     return JSON.stringify(filters) !== JSON.stringify(INITIAL_FILTERS);
   })();
+  const hasActiveSorts = (() => {
+    return JSON.stringify(sort) !== JSON.stringify(INITIAL_SORT);
+  })();
+
+  const onSortChange = (s: UsersSort) => {
+    setSort(s);
+  };
 
   return (
     <MockLayout>
@@ -61,8 +69,13 @@ export const UserPage = () => {
           onChange={onFilterChange}
           hasActiveFilters={hasActiveFilters}
         />
+        <UsersSortButton
+          value={sort}
+          onChange={onSortChange}
+          hasActiveSort={hasActiveSorts}
+        />
         <UsersFilterChips value={filters} onChange={onFilterChange} />
-        <UsersList users={filteredUsers} />
+        <UsersList users={sortedUsers} />
       </Box>
     </MockLayout>
   );
